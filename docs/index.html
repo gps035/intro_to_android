@@ -145,7 +145,7 @@
 }
                     </code>
                 </pre>
-                <p>We use the <code>setContentView</code> method to tell the OS that it should use the <code>activity_main.xml</code> layout</pre>
+                <p>We use the <code>setContentView</code> method to tell the OS that it should use the <code>activity_main.xml</code> layout</p>
                 <p>The OS will then create views with default values as defined in that file</p>
             </section>
         </section>
@@ -346,6 +346,13 @@
             </section>
             <section data-markdown>
                 <textarea data-template>
+                    Now we need some initial code for our game. It is not finished, and we will fill in the missing pieces
+                    We will start with updating the code for our MainActivity, and from there, we will add the other files to the same folder
+                    For the new files, right click the folder, and choose `New` > `Kotlin File/Class` and replace the contents
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
                     `MainActivity.kt`
 
                     ```kotlin
@@ -431,6 +438,8 @@ class MainActivity : AppCompatActivity() {
                 <textarea data-template>
                     `Player.kt`
 
+                    This file just represents the different players of the game
+
                     ```kotlin
 package com.example.naughtsandcrosses
 
@@ -444,6 +453,8 @@ enum class Player {
             <section data-markdown>
                 <textarea data-template>
                     `AppState.kt`
+
+                    This file holds the current state of our app, like the current player etc, and methods for updating that state from `MainActivity`
 
                     ```kotlin
 package com.example.naughtsandcrosses
@@ -497,6 +508,8 @@ class AppState {
             <section data-markdown>
                 <textarea data-template>
                     `BoardState.kt`
+
+                    This file just contains the state of our game board, and methods to update the state from `AppState`
 
                     ```kotlin
 package com.example.naughtsandcrosses
@@ -561,6 +574,15 @@ class BoardState {
     }
 }
                     ```
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    If you have any issues getting this setup so far, we have an initial version of the project available here.
+
+                    Just unzip the folder and open in Android studio
+
+                    [Starter app](https://github.com/codeupleeds/intro_to_android/archive/starting-point.zip)
                 </textarea>
             </section>
         </section>
