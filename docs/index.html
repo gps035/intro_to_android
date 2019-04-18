@@ -52,6 +52,98 @@
             </section>
         </section>
         <section>
+            <section data-markdown>
+                <textarea data-template>
+                    # Kotlin
+
+                    Historically, Java has been the language to use for Android development.
+
+                    It is an older language though, and is harder to adapt to more recent ways of writing software.
+
+                    Kotlin, a language originally developed by JetBrains has been adopted by Google as an officially supported language for Android development.
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    Kotlin code tends to be less verbose, and easier to read than Java.
+
+                    It also has some newer features to help make errors easier to detect before running the code.
+
+                    A downside is that there is a lot of code and documentation currently written in Java.
+
+                    This is getting better as more developers start using Kotlin.
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ## Features
+
+                    Today we won't see much of the more complicated parts, so let's just cover a bit.
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ### Variables
+
+                    ```kotlin
+                    var variable = 5
+                    val value = "Hello"
+                    ```
+
+                    `val`s cannot be modified, while `var` can. The compiler also infers the types from the assigned values.
+
+                    ```kotlin
+                    value = "Goodbye"
+                    ```
+                    This code will not compile
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ### Functions/Methods
+
+                    ```kotlin
+                    fun sayHello(name: String): String {
+                        return "Hello " + name + "!"
+                    }
+                    ```
+                    We define functions as above, the type of the parameters is listed after the parameter name, and the return type of the function is listed after all parameters.
+
+                    If the function returns nothing, we can leave off the return type.
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ### Control flow
+
+                    ```kotlin
+                    if (thing) {
+                        // Do the thing
+                    } else if (otherThing) {
+                        // Do the other thing
+                    } else {
+                        // Do something else
+                    }
+                    ```
+                    Ifs and elses can be used much the same as in other languages (Though there is more you can do with them).
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ### Control flow
+
+                    ```kotlin
+                    for (number in 0..2) {
+                        // Do something for each number
+                    }
+                    ```
+                    This will execute the core in the loop once for each value in the range `0..2`.
+
+                    We can replace the range with a collection, like an array, to run the loop for each item in the collection
+                </textarea>
+            </section>
+        </section>
+        <section>
             <section>
                 <h3>Fundamentals</h3>
                 <a href="https://developer.android.com/guide/components/fundamentals.html">https://developer.android.com/guide/components/fundamentals.html</a>
@@ -583,6 +675,26 @@ class BoardState {
                     Just unzip the folder and open in Android studio
 
                     [Starter app](https://github.com/codeupleeds/intro_to_android/archive/starting-point.zip)
+                </textarea>
+            </section>
+        </section>
+        <section>
+            <section data-markdown>
+                <textarea data-template>
+                    ## Tasks
+
+                    The app in it's current state, is unfinished. Run it to see. We will need to update the code to make it work properly.
+                </textarea>
+            </section>
+            <section data-markdown>
+                <textarea data-template>
+                    ## Current player
+
+                    The current player currently does not change to crosses when we choose a tile.
+
+                    There is a method in `AppState` that gets the next player, but it currently just returns the current player.
+
+                    See if you can get this working, and run the app to see if it works.
                 </textarea>
             </section>
         </section>
