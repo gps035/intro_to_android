@@ -20,25 +20,16 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
-# Haven't been able to get instrumented tests working, it seems that the best approach is to use firebase test lab
-#      - run:
-#          name: Setup emulator
-#          command: sdkmanager "system-images;android-28;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;google_apis;armeabi-v7a"
-#      - run:
-#          name: Launch emulator
-#          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
-#          background: true
-#      - run:
-#          name: Wait emulator
-#          command: |
-#            # wait for it to have booted
-#            circle-android wait-for-boot
-#            # unlock the emulator screen
-#            sleep 30
-#            adb shell input keyevent 82
-#      - run:
-#          name: Run Tests
-#          command: ./gradlew connectedAndroidTest
+      - run:
+          name: Build debug app
+          command: ./gradlew -PciBuild=true assembleDebug assembleAndroidTest
+      - run:
+          name: Run Instrumented Tests
+          command: |
+            gcloud config set project intro-to-android
+            echo $GCLOUD_SERVICE_ACCOUNT_KEY | base64 -di > ${HOME}/client-secret.json
+            gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_ID --key-file ${HOME}/client-secret.json
+            gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --environment-variables coverage=true,coverageFile=/sdcard/tmp/code-coverage/connected/coverage.ec --directories-to-pull=/sdcard/tmp --timeout 20m --device model=Nexus4,version=21,locale=en_GB,orientation=portrait
       - run:
           name: Build release APK
           command: ./gradlew clean assembleRelease --no-daemon --stacktrace
