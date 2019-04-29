@@ -12,35 +12,44 @@ class AppViewModel(initialState: AppState) : BaseMvRxViewModel<AppState>(initial
         )
     }
 
-    fun tileClicked(row: Int, col: Int) = setState {
+    fun tileClicked(row: Int, col: Int) = withState {
         // If we aren't playing right now, do nothing
-        if (!currentlyPlaying) {
-            return@setState this
+        if (!it.currentlyPlaying) {
+            return@withState
         }
         // If a player has already claimed this tile, do nothing
-        if (boardState.getPlayerAtPosition(row, col) != null) {
-            return@setState this
+        if (it.boardState.getPlayerAtPosition(row, col) != null) {
+            return@withState
         }
-        val newBoardState = boardState.setPlayerAtPosition(row, col, currentPlayer)
         // Otherwise, the current player can claim this tile
-        var nowCurrentlyPlaying = currentlyPlaying
-        var newLastWinner = lastWinner
+        claimTile(row, col)
         // Now that we have updated the board we can query it's current state
-        if (newBoardState.playerHasWon(currentPlayer)) {
+        checkWinCondition()
+        setNextPlayer()
+    }
+
+    private fun claimTile(row: Int, col: Int) = setState {
+        copy(boardState = boardState.setPlayerAtPosition(row, col, currentPlayer))
+    }
+
+    private fun checkWinCondition() = setState {
+        when {
             // If the current player has won, we can stop playing, and set the current player as the last winner
-            nowCurrentlyPlaying = false
-            newLastWinner = currentPlayer
-        } else if (newBoardState.noFreeTiles()) {
+            boardState.playerHasWon(currentPlayer) -> copy(
+                currentlyPlaying = false,
+                lastWinner = currentPlayer
+            )
             // Otherwise, if there are no tiles left to claim, it is a draw
-            nowCurrentlyPlaying = false
-            newLastWinner = null
+            boardState.noFreeTiles() -> copy(
+                currentlyPlaying = false,
+                lastWinner = null
+            )
+            else -> this
         }
-        return@setState copy(
-            boardState = newBoardState,
-            currentPlayer = nextPlayer(currentPlayer),
-            currentlyPlaying = nowCurrentlyPlaying,
-            lastWinner = newLastWinner
-        )
+    }
+
+    private fun setNextPlayer() = setState {
+        copy(currentPlayer = nextPlayer(currentPlayer))
     }
 
     // Here we swap the current player
