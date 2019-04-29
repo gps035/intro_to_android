@@ -1,43 +1,46 @@
 package com.example.naughtsandcrosses
 
-data class AppState(
-    val boardState: BoardState = BoardState(),
-    val lastWinner: Player? = null,
-    val currentPlayer: Player = Player.Naughts,
-    val currentlyPlaying: Boolean = true
-)
+import com.airbnb.mvrx.BaseMvRxViewModel
 
-class AppPresenter {
-    var state = AppState()
-    private set
+class AppViewModel(initialState: AppState) : BaseMvRxViewModel<AppState>(initialState, debugMode = BuildConfig.DEBUG) {
 
-    fun startNewGame() = state.copy(
-        currentPlayer = startingPlayer(state),
-        currentlyPlaying = true,
-        boardState = state.boardState.clearBoard()
-    ).also { state = it }
+    fun startNewGame() = setState {
+        copy(
+            currentPlayer = startingPlayer(this),
+            currentlyPlaying = true,
+            boardState = this.boardState.clearBoard()
+        )
+    }
 
-    fun tileClicked(row: Int, col: Int): AppState {
+    fun tileClicked(row: Int, col: Int) = setState {
         // If we aren't playing right now, do nothing
-        if (!state.currentlyPlaying) {
-            return state
+        if (!currentlyPlaying) {
+            return@setState this
         }
         // If a player has already claimed this tile, do nothing
-        if (state.boardState.getPlayerAtPosition(row, col) != null) {
-            return state
+        if (boardState.getPlayerAtPosition(row, col) != null) {
+            return@setState this
         }
+        val newBoardState = boardState.setPlayerAtPosition(row, col, currentPlayer)
         // Otherwise, the current player can claim this tile
-        state = state.copy(boardState = state.boardState.setPlayerAtPosition(row, col, state.currentPlayer))
-
+        var nowCurrentlyPlaying = currentlyPlaying
+        var newLastWinner = lastWinner
         // Now that we have updated the board we can query it's current state
-        if (state.boardState.playerHasWon(state.currentPlayer)) {
-            // If the current player has won, we can stop playing, and set the curent player as the last winner
-            state = state.copy(lastWinner = state.currentPlayer, currentlyPlaying = false)
-        } else if (state.boardState.noFreeTiles()) {
+        if (newBoardState.playerHasWon(currentPlayer)) {
+            // If the current player has won, we can stop playing, and set the current player as the last winner
+            nowCurrentlyPlaying = false
+            newLastWinner = currentPlayer
+        } else if (newBoardState.noFreeTiles()) {
             // Otherwise, if there are no tiles left to claim, it is a draw
-            state = state.copy(lastWinner = null, currentlyPlaying = false)
+            nowCurrentlyPlaying = false
+            newLastWinner = null
         }
-        return state.copy(currentPlayer = nextPlayer(state.currentPlayer)).also { state = it }
+        return@setState copy(
+            boardState = newBoardState,
+            currentPlayer = nextPlayer(currentPlayer),
+            currentlyPlaying = nowCurrentlyPlaying,
+            lastWinner = newLastWinner
+        )
     }
 
     // Here we swap the current player
