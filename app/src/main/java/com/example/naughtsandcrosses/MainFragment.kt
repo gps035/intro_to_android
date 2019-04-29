@@ -1,5 +1,6 @@
 package com.example.naughtsandcrosses
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,19 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseMvRxFragment() {
     private val viewModel: AppViewModel by fragmentViewModel()
+    private lateinit var naughts: Drawable
+    private lateinit var crosses: Drawable
+    private lateinit var nothing: Drawable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        naughts = ContextCompat.getDrawable(context!!, R.drawable.ic_circle)!!
+        crosses = ContextCompat.getDrawable(context!!, R.drawable.ic_cross)!!
+        nothing = ContextCompat.getDrawable(context!!, R.color.white)!!
 
         // Call the tileClicked method when a user taps a tile
         row1Col1.setOnClickListener { viewModel.tileClicked(1, 1) }
@@ -80,15 +88,12 @@ class MainFragment : BaseMvRxFragment() {
     }
 
     private fun setTileImage(state: AppState, tile: ImageView, row: Int, col: Int) {
-        val imageToUse = getPlayerImageForTile(state, row, col)
+        val imageToUse = when (state.boardState.getPlayerAtPosition(row, col)) {
+            Player.Naughts -> naughts
+            Player.Crosses -> crosses
+            null -> nothing
+        }
 
         tile.setImageDrawable(imageToUse)
     }
-
-    private fun getPlayerImageForTile(state: AppState, row: Int, col: Int) =
-        when (state.boardState.getPlayerAtPosition(row, col)) {
-            Player.Naughts -> ContextCompat.getDrawable(context!!, R.drawable.ic_circle)
-            Player.Crosses -> ContextCompat.getDrawable(context!!, R.drawable.ic_cross)
-            null -> ContextCompat.getDrawable(context!!, R.color.white)
-        }
 }
