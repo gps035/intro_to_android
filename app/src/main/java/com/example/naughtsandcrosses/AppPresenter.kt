@@ -9,6 +9,7 @@ data class AppState(
 
 class AppPresenter {
     var state = AppState()
+    private set
 
     fun startNewGame() = state.copy(
         currentPlayer = startingPlayer(state),
