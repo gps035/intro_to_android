@@ -1,10 +1,9 @@
 package com.example.naughtsandcrosses
 
-import android.graphics.drawable.Drawable
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -59,37 +58,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showOrHideStartButton(state: AppState) {
-        if (state.currentlyPlaying) {
-            restart.visibility = View.INVISIBLE
-        } else {
-            restart.visibility = View.VISIBLE
-        }
+        restart.isVisible = !state.currentlyPlaying
     }
 
     private fun setMessage(state: AppState) {
-        if (state.currentlyPlaying) {
-            message.text = getCurrentPlayerMessage(state)
+        message.text = if (state.currentlyPlaying) {
+            getCurrentPlayerMessage(state)
         } else {
-            message.text = getWinnerText(state)
+            getWinnerText(state)
         }
     }
 
-    private fun getCurrentPlayerMessage(state: AppState): String {
-        if (state.currentPlayer == Player.Naughts) {
-            return getString(R.string.naught_turn)
-        } else {
-            return getString(R.string.cross_turn)
-        }
+    private fun getCurrentPlayerMessage(state: AppState) = if (state.currentPlayer == Player.Naughts) {
+        getString(R.string.naught_turn)
+    } else {
+        getString(R.string.cross_turn)
     }
 
-    private fun getWinnerText(state: AppState): String {
-        if (state.lastWinner == Player.Naughts) {
-            return getString(R.string.naught_win)
-        } else if (state.lastWinner == Player.Crosses) {
-            return getString(R.string.cross_win)
-        } else {
-            return getString(R.string.draw)
-        }
+    private fun getWinnerText(state: AppState) = when (state.lastWinner) {
+        Player.Naughts -> getString(R.string.naught_win)
+        Player.Crosses -> getString(R.string.cross_win)
+        null -> getString(R.string.draw)
     }
 
     private fun setTileImage(state: AppState, tile: ImageView, row: Int, col: Int) {
@@ -98,14 +87,10 @@ class MainActivity : AppCompatActivity() {
         tile.setImageDrawable(imageToUse)
     }
 
-    private fun getPlayerImageForTile(state: AppState, row: Int, col: Int): Drawable? {
-        val player = state.boardState.getPlayerAtPosition(row, col)
-        if (player == Player.Naughts) {
-            return getDrawable(R.drawable.ic_circle)
-        } else if (player == Player.Crosses) {
-            return getDrawable(R.drawable.ic_cross)
-        } else {
-            return getDrawable(R.color.white)
+    private fun getPlayerImageForTile(state: AppState, row: Int, col: Int) =
+        when (state.boardState.getPlayerAtPosition(row, col)) {
+            Player.Naughts -> getDrawable(R.drawable.ic_circle)
+            Player.Crosses -> getDrawable(R.drawable.ic_cross)
+            null -> getDrawable(R.color.white)
         }
-    }
 }
