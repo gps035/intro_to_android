@@ -1,21 +1,25 @@
 package com.example.naughtsandcrosses
 
-class BoardState {
-    // We represent the board as a 2-dimensional array of Players
-    private val boardState = arrayOf(
-        arrayOf<Player?>(null, null, null),
-        arrayOf<Player?>(null, null, null),
-        arrayOf<Player?>(null, null, null)
+// We represent the board as a 2-dimensional list of Players
+data class BoardState(
+    private val boardState: List<List<Player?>> = listOf(
+        listOf<Player?>(null, null, null),
+        listOf<Player?>(null, null, null),
+        listOf<Player?>(null, null, null)
     )
-
+) {
     fun getPlayerAtPosition(row: Int, col: Int): Player? {
         // We subtract 1 on each, because array indexes start at 0, not 1
         return boardState[row - 1][col - 1]
     }
 
-    fun setPlayerAtPosition(row: Int, col: Int, player: Player) {
+    fun setPlayerAtPosition(row: Int, col: Int, player: Player): BoardState {
         // We subtract 1 on each, because array indexes start at 0, not 1
-        boardState[row - 1][col - 1] = player
+        return this.copy(boardState = boardState.toMutableList().apply {
+            this[row - 1] = this[row - 1].toMutableList().apply {
+                this[col - 1] = player
+            }
+        })
     }
 
     fun playerHasWon(player: Player): Boolean {
@@ -64,13 +68,9 @@ class BoardState {
         return false
     }
 
-    fun clearBoard() {
-        // We loop over all tiles to set the value to empty
-        for (row in boardState) {
-            for (cellIndex in 0..2) {
-                row[cellIndex] = null
-            }
-        }
+    fun clearBoard(): BoardState {
+        // Return a new board state
+        return BoardState()
     }
 
     fun noFreeTiles(): Boolean {

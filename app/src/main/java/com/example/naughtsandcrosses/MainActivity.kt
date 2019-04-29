@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val state = AppState()
+    private val presenter = AppPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,41 +28,37 @@ class MainActivity : AppCompatActivity() {
 
         restart.setOnClickListener { startNewGame() }
 
-        invalidate()
+        invalidate(presenter.state)
     }
 
     private fun startNewGame() {
-        state.startNewGame()
-
-        invalidate()
+        presenter.startNewGame().also { invalidate(it) }
     }
 
     private fun tileClicked(row: Int, col: Int) {
-        state.tileClicked(row, col)
-
-        invalidate()
+        presenter.tileClicked(row, col).also { invalidate(it) }
     }
 
     // This method updates the UI.
-    // This should be the only place that we do this, and it should update based on the AppState
-    private fun invalidate() {
-        setMessage()
+    // This should be the only place that we do this, and it should update based on the AppPresenter
+    private fun invalidate(state: AppState) {
+        setMessage(state)
 
-        showOrHideStartButton()
+        showOrHideStartButton(state)
 
         // Update each tile's image
-        setTileImage(row1Col1, 1, 1)
-        setTileImage(row1Col2, 1, 2)
-        setTileImage(row1Col3, 1, 3)
-        setTileImage(row2Col1, 2, 1)
-        setTileImage(row2Col2, 2, 2)
-        setTileImage(row2Col3, 2, 3)
-        setTileImage(row3Col1, 3, 1)
-        setTileImage(row3Col2, 3, 2)
-        setTileImage(row3Col3, 3, 3)
+        setTileImage(state, row1Col1, 1, 1)
+        setTileImage(state, row1Col2, 1, 2)
+        setTileImage(state, row1Col3, 1, 3)
+        setTileImage(state, row2Col1, 2, 1)
+        setTileImage(state, row2Col2, 2, 2)
+        setTileImage(state, row2Col3, 2, 3)
+        setTileImage(state, row3Col1, 3, 1)
+        setTileImage(state, row3Col2, 3, 2)
+        setTileImage(state, row3Col3, 3, 3)
     }
 
-    private fun showOrHideStartButton() {
+    private fun showOrHideStartButton(state: AppState) {
         if (state.currentlyPlaying) {
             restart.visibility = View.INVISIBLE
         } else {
@@ -70,15 +66,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setMessage() {
+    private fun setMessage(state: AppState) {
         if (state.currentlyPlaying) {
-            message.text = getCurrentPlayerMessage()
+            message.text = getCurrentPlayerMessage(state)
         } else {
-            message.text = getWinnerText()
+            message.text = getWinnerText(state)
         }
     }
 
-    private fun getCurrentPlayerMessage(): String {
+    private fun getCurrentPlayerMessage(state: AppState): String {
         if (state.currentPlayer == Player.Naughts) {
             return getString(R.string.naught_turn)
         } else {
@@ -86,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getWinnerText(): String {
+    private fun getWinnerText(state: AppState): String {
         if (state.lastWinner == Player.Naughts) {
             return getString(R.string.naught_win)
         } else if (state.lastWinner == Player.Crosses) {
@@ -96,13 +92,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTileImage(tile: ImageView, row: Int, col: Int) {
-        val imageToUse = getPlayerImageForTile(row, col)
+    private fun setTileImage(state: AppState, tile: ImageView, row: Int, col: Int) {
+        val imageToUse = getPlayerImageForTile(state, row, col)
 
         tile.setImageDrawable(imageToUse)
     }
 
-    private fun getPlayerImageForTile(row: Int, col: Int): Drawable? {
+    private fun getPlayerImageForTile(state: AppState, row: Int, col: Int): Drawable? {
         val player = state.boardState.getPlayerAtPosition(row, col)
         if (player == Player.Naughts) {
             return getDrawable(R.drawable.ic_circle)
