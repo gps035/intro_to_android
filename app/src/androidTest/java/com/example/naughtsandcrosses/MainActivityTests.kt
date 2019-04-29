@@ -21,7 +21,7 @@ class MainActivityTests {
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
-    private fun clickTile(id: Int) = onView(allOf(withId(id), isDisplayed())).apply { perform(click()) }
+    private fun clickTile(id: Int) = onView(allOf(withId(id), isDisplayed())).perform(click())
 
     @Test
     fun canWinDiagonally() {
