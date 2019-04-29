@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/gameBoardBackground</item>
         <item name="colorPrimaryDark">@color/codeUpBlue</item>
         <item name="colorAccent">@color/infinityWorksOrange</item>
+        <item name="android:windowBackground">@color/appBackground</item>
     </style>
 
 </resources>

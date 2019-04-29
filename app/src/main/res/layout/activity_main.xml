@@ -5,8 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="@color/appBackground">
+        tools:context=".MainActivity">
     <ImageView
             android:layout_width="200dp"
             android:layout_height="100dp"
@@ -45,7 +44,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/row2Col1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/row1Col2"/>
+                app:layout_constraintEnd_toStartOf="@+id/row1Col2"
+                android:contentDescription="@string/row_1_column_1"/>
         <ImageView
                 android:id="@+id/row1Col2"
                 android:layout_width="100dp"
@@ -55,7 +55,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/row2Col2"
                 app:layout_constraintStart_toEndOf="@+id/row1Col1"
-                app:layout_constraintEnd_toStartOf="@+id/row1Col3"/>
+                app:layout_constraintEnd_toStartOf="@+id/row1Col3"
+                android:contentDescription="@string/row_1_column_2"/>
         <ImageView
                 android:id="@+id/row1Col3"
                 android:layout_width="100dp"
@@ -65,7 +66,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/row2Col3"
                 app:layout_constraintStart_toEndOf="@+id/row1Col2"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/row_1_column_3"/>
         <ImageView
                 android:id="@+id/row2Col1"
                 android:layout_width="100dp"
@@ -75,7 +77,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row1Col1"
                 app:layout_constraintBottom_toTopOf="@+id/row3Col1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/row2Col2"/>
+                app:layout_constraintEnd_toStartOf="@+id/row2Col2"
+                android:contentDescription="@string/row_2_column_1"/>
         <ImageView
                 android:id="@+id/row2Col2"
                 android:layout_width="100dp"
@@ -85,7 +88,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row1Col2"
                 app:layout_constraintBottom_toTopOf="@+id/row3Col2"
                 app:layout_constraintStart_toEndOf="@+id/row2Col1"
-                app:layout_constraintEnd_toStartOf="@+id/row2Col3"/>
+                app:layout_constraintEnd_toStartOf="@+id/row2Col3"
+                android:contentDescription="@string/row_2_column_2"/>
         <ImageView
                 android:id="@+id/row2Col3"
                 android:layout_width="100dp"
@@ -95,7 +99,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row1Col3"
                 app:layout_constraintBottom_toTopOf="@+id/row3Col3"
                 app:layout_constraintStart_toEndOf="@+id/row2Col2"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/row_2_column_3"/>
         <ImageView
                 android:id="@+id/row3Col1"
                 android:layout_width="100dp"
@@ -105,7 +110,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row2Col1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/row3Col2"/>
+                app:layout_constraintEnd_toStartOf="@+id/row3Col2"
+                android:contentDescription="@string/row_3_column_1"/>
         <ImageView
                 android:id="@+id/row3Col2"
                 android:layout_width="100dp"
@@ -115,7 +121,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row2Col2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/row3Col1"
-                app:layout_constraintEnd_toStartOf="@+id/row3Col3"/>
+                app:layout_constraintEnd_toStartOf="@+id/row3Col3"
+                android:contentDescription="@string/row_3_column_2"/>
         <ImageView
                 android:id="@+id/row3Col3"
                 android:layout_width="100dp"
@@ -125,7 +132,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/row2Col3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/row3Col2"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/row_3_column_3"/>
     </android.support.constraint.ConstraintLayout>
     <TextView
             android:layout_width="wrap_content"

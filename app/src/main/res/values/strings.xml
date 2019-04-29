@@ -7,4 +7,13 @@
     <string name="naught_win">O\'s win.\nClick restart to play again</string>
     <string name="cross_win">X\'s win.\nClick restart to play again</string>
     <string name="draw">Draw.\nClick restart to play again</string>
+    <string name="row_1_column_1">Row 1 Column 1</string>
+    <string name="row_1_column_2">Row 1 Column 2</string>
+    <string name="row_1_column_3">Row 1 Column 3</string>
+    <string name="row_2_column_1">Row 2 Column 1</string>
+    <string name="row_2_column_2">Row 2 Column 2</string>
+    <string name="row_2_column_3">Row 2 Column 3</string>
+    <string name="row_3_column_1">Row 3 Column 1</string>
+    <string name="row_3_column_2">Row 3 Column 2</string>
+    <string name="row_3_column_3">Row 3 Column 3</string>
 </resources>
