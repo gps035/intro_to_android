@@ -73,15 +73,17 @@ data class BoardState(
         return BoardState()
     }
 
-    fun noFreeTiles(): Boolean {
-        // We loop over all tiles to see if unclaimed
-        for (row in boardState) {
-            for (player in row) {
-                if (player == null) {
-                    return false
+    fun noFreeTiles() = !freePositions().any()
+
+    fun freePositions(): List<Pair<Int, Int>> {
+        val positions = mutableListOf<Pair<Int, Int>>()
+        for (row in 0 until boardState.count()) {
+            for (col in 0 until boardState[row].count()) {
+                if (boardState[row][col] == null) {
+                    positions.add(Pair(row + 1, col + 1))
                 }
             }
         }
-        return true
+        return positions
     }
 }
