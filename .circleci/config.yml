@@ -20,16 +20,24 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
+      - store_test_results:
+          path: app/build/test-results
       - run:
           name: Build debug app
           command: ./gradlew -PciBuild=true assembleDebug assembleAndroidTest
       - run:
           name: Run Instrumented Tests
           command: |
-            gcloud config set project intro-to-android
+            gcloud config set project $FIREBASE_PROJECT_NAME
             echo $GCLOUD_SERVICE_ACCOUNT_KEY | base64 -di > ${HOME}/client-secret.json
             gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_ID --key-file ${HOME}/client-secret.json
             gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --environment-variables coverage=true,coverageFile=/sdcard/tmp/code-coverage/connected/coverage.ec --directories-to-pull=/sdcard/tmp --timeout 20m --device model=Nexus4,version=21,locale=en_GB,orientation=portrait
+# We can store test results, but let's not bother for now https://medium.com/@ayltai/all-you-need-to-know-about-circleci-2-0-with-firebase-test-lab-2a66785ff3c2
+#            mkdir firebase
+#            gsutil -m cp -r -U "`gsutil ls gs://test-lab-{random id}-{random id} | tail -1`*" /root/workspace/firebase/
+#      - store_artifacts:
+#          path: firebase/
+#          destination: /firebase/
       - run:
           name: Build release APK
           command: ./gradlew clean assembleRelease --no-daemon --stacktrace
